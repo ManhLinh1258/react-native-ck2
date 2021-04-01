@@ -5,7 +5,7 @@ export default function () {
     return (
         <View>
             <Text>
-                
+                abc
             </Text>
         </View>
     )
