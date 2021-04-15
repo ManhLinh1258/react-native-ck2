@@ -1,91 +1,60 @@
-import React, {Component} from 'react'
-import {StyleSheet, Text, View, TextInput, TouchableOpacity, TouchableWithoutFeedback} from 'react-native'
-export default class Login extends Component{
-    render(){
-        return(
-            <View style={styles.container}>
-            <View style={styles.up}>
-           <Text style={styles.title}>
-          SIGN IN
-           </Text>
-           <View style={styles.textInputContainer}>
-            <TextInput style={styles.texInput}
-            textContentType='emailAddress'
-            keybroadType='email-address'
-            placeholder='manhlinh1258@gmail.com'>
-            </TextInput>
-           </View>
-            <View style={styles.textInputContainer}>
-            <TextInput style={styles.texInput}
-            placeholder='enter your pass'
-            secureTextEntry={true}
-          >
-            </TextInput>
-           </View>
-           <TouchableOpacity style={styles.loginbutton} >
-           <Text style={styles.loginbuttontitle}> SIGN IN </Text>
-           </TouchableOpacity>
-           <Text>forgot pass?</Text>
-            <Text>don't have a accout?</Text>
-            </View>
-              <View style={styles.down}>
-              <Text>FACE ID SETTING </Text>
-                  <Text>To turn on/off face ID, go to[My Account]>[Setting]>[Face ID]>on/off </Text>
-            </View>
-             </View>
-        )
-    }
+// You can import Ionicons from @expo/vector-icons if you use Expo or
+// react-native-vector-icons/Ionicons otherwise.
+import * as React from 'react';
+import { Text, View } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+
+import Home from './src/screens/Home'
+import ProductList from './src/screens/ProductList'
+import Detail from './src/screens/Detail'
+import WishList from './src/screens/WishList'
+import Cart from './src/screens/Cart'
+import Me from './src/screens/Me'
+
+const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
+const HomeStack = () => {
+  return (
+    <Stack.Navigator initialRouteName="Home">
+      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="Product" component={ProductList} />
+      <Stack.Screen name="Detail" component={Detail} />
+    </Stack.Navigator>
+  )
 }
-const styles = StyleSheet.create({
-    container:{
-        flex: 1,
-        flexDirection:'column',
-        justifyContent:'center',
-        alignItems: 'stretch',
-       
-      
-        backgroundColor:'rgb(234, 195, 176)'
-    },
-    up:{
-        flex:85,
-          flexDirection:'column',
-          backgroundColor:'white',
-          justifyContent:'center',
-          alignItems:'center'
-    },
-    down:{
-        flex:15,
-          flexDirection:'column',
-          backgroundColor:'white',
-          justifyContent:'center',
-          alignItems:'center'
-
-    },
-    title:{
-        color: 'black',
-        textAlign:'center',
-        width: 400,
-        fontSize: 23
-    },
-    textInputContainer:{
-        paddingHorizontal: 10,
-        backgroundColor: 'rgba(255,255,255,0.2)',
-         marginBottom:60,
-
-    },
-    texInput:{
-        width:280,
-        height:45
-    },
-    loginbutton:{
-        width:280,
-        height:45,
-        backgroundColor:'yellow',
-        justifyContent:'center',
-        alignItems:'center'
-    },
-    loginbuttontitle:{
-        fontSize:18,
-        color:'black'
-    }
-})
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+            if (route.name === 'Home') {
+              iconName = focused ? 'ios-information-circle' : 'ios-information-circle-outline';
+            } else if (route.name === 'WishList') {
+              iconName = focused ? 'alarm-sharp' : 'alarm-outline';
+            } else if (route.name === 'Cart') {
+              iconName = focused ? 'airplane-sharp' : 'airplane-outline';
+            } else if (route.name === 'Me') {
+              iconName = focused ? 'airplane-sharp' : 'airplane-outline';
+            }
+            // You can return any component that you like here!
+            return <Ionicons name={iconName} size={size} color={color} />;
+          },
+        })}
+        tabBarOptions={{
+          activeTintColor: 'tomato',
+          inactiveTintColor: 'gray',
+        }}
+      >
+        <Tab.Screen name="Home" component={HomeStack} />
+        <Tab.Screen name="WishList" component={WishList} />
+        <Tab.Screen name="Cart" component={Cart} />
+        <Tab.Screen name="Me" component={Me} />
+      </Tab.Navigator>
+    </NavigationContainer>
+  );
+}
