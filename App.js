@@ -33,13 +33,13 @@ export default function App() {
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
             if (route.name === 'Home') {
-              iconName = focused ? 'ios-information-circle' : 'ios-information-circle-outline';
+              iconName = focused ? 'home-outline' : 'home-sharp';
             } else if (route.name === 'WishList') {
-              iconName = focused ? 'alarm-sharp' : 'alarm-outline';
+              iconName = focused ? 'heart' : 'ios-heart';
             } else if (route.name === 'Cart') {
-              iconName = focused ? 'airplane-sharp' : 'airplane-outline';
+              iconName = focused ? 'cart-outline' : 'cart-sharp';
             } else if (route.name === 'Me') {
-              iconName = focused ? 'airplane-sharp' : 'airplane-outline';
+              iconName = focused ? 'person-outline' : 'person';
             }
             // You can return any component that you like here!
             return <Ionicons name={iconName} size={size} color={color} />;
