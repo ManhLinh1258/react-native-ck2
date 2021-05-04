@@ -28,7 +28,7 @@ export default function App() {
     <View style={{ width: '45%', }}>
       <Image
         style={styles.imgStyle}
-        source={{ uri: getImage(item.images?.[0]) }}
+        source={{ uri: getIm  age(item.images?.[0]) }}
       />
       <View style={styles.rowPrice}>
         <Text>{item.price}</Text>
