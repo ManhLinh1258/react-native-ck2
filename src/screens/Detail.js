@@ -1,59 +1,75 @@
 import React from 'react'
-import { View, Text, TouchableOpacity, FlatList, Image, StyleSheet } from 'react-native'
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { View, Text, Image, TouchableOpacity } from 'react-native'
+import Ionicons from 'react-native-vector-icons/Ionicons'
+import { useDispatch, useSelector } from "react-redux";
+import { getImage } from '../utils';
+const sizes = ['S', "M", "L", 'XL', 'XXL']
+export default function DetailScreen({ route, navigation }) {
+  const dispatch = useDispatch();
+  const { detail } = route.params;
 
-const DATA = [
-  {
-    photo: 'https://media.travelmag.vn/files/thuannguyen/2020/04/25/cach-chup-anh-dep-tai-da-lat-1-2306.jpeg',
+  // const onAddCart = () => dispatch({ type: 'ADD_QUANTITY', data: item })
+  const onAddCart = () => {
+    dispatch({ type: 'ADD_CART', detail: detail })
   }
-]
-
-export default function Detail() {
-    const renderItem = ({ item }) => (
-        <View style={{ width: '100%', }}>
-            <Image
-        style={styles.imgStyle}
-        source={{ uri: item.photo, }}
+  return (
+    <View>
+      <TouchableOpacity>
+        <Ionicons name="heart" size={30} color={'grey'}
+          style={{ position: 'absolute', top: 20, right: 20, }}
         />
+      </TouchableOpacity>
+      {/* <Image source={{ uri: getImage(detail?.images?.[0]) }}
+        style={{ width: '100%', height: 360, resizeMode: 'contain' }} /> */}
+      <Image source={{ uri: detail?.img }}
+        style={{ width: '100%', height: 360, resizeMode: 'contain' }} />
+      <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{detail.name}</Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
+          <Text style={{
+            marginRight: 5,
+            fontWeight: 'bold'
+          }}>{detail?.price}</Text>
+          <Text style={{ textDecorationLine: 'line-through', color: 'grey' }}>1000k</Text>
+          <Text style={{ borderWidth: 1, padding: 5, marginLeft: 10, borderRadius: 5, backgroundColor: '#90ee90', borderColor: 'transparent' }}>
+            50%
+          </Text>
         </View>
-    );
-    return (
-        <View>
-          <FlatList
-            data={DATA}
-            numColumns={2}
-            renderItem={renderItem}
-            keyExtractor={item => item.id}
-            columnWrapperStyle={{ justifyContent: 'space-around', marginBottom: 20, flex: 1 }}
-            style={{ marginBottom: 15 }}
-          />
-          <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: 'white' }}>
-          <Ionicons name="ios-ellipse-outline" size={40} color="black" />
-        <TouchableOpacity style={styles.a}>
-          <Text style={styles.b}>ADD TO CART</Text>
+        <View style={{
+          flexDirection: 'row',
+          justifyContent: 'space-around',
+          width: '100%',
+          paddingHorizontal: 40,
+          marginTop: 10
+        }}>
+          {/* {sizes.map((e, i) => {
+            const isChecked = e === detail?.size?.[0]
+            return (
+              <TouchableOpacity key={i}
+                style={{
+                  borderRadius: 20, backgroundColor: isChecked ? 'grey' : 'white',
+                  borderWidth: 1, padding: 2, height: 40, width: 40, justifyContent: 'center', alignItems: 'center'
+                }}
+              >
+                <Text style={{ fontSize: 10 }}>{e}</Text>
+              </TouchableOpacity>
+            )
+          })} */}
+        </View>
+        <TouchableOpacity
+          onPress={onAddCart}
+          style={{
+            backgroundColor: '#FF5254',
+            marginTop: 15, width: '60%', borderWidth: 1,
+            borderRadius: 20, paddingVertical: 12,
+            borderColor: 'transparent',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}>
+          <Text style={{ color: '#fff', fontWeight: 'bold' }}>ADD TO BAG</Text>
         </TouchableOpacity>
-        <Ionicons name="heart-outline" size={40} color="White" />
-        </View>
-        </View>
-      )
-    }
-    
-    const styles = StyleSheet.create({
-      imgStyle: {
-        height: 550,
-        width: 'auto',
-      },
-      a:{ 
-        flex:1,
-        justifyContent: 'center', 
-        alignItems: 'center',
-        backgroundColor:'black',
-        width:220,
-        height:50,
-        marginLeft:20,
-        marginRight:20
-      },
-      b:{
-          color:'#ffffff'
-      }
-    });
+
+      </View>
+    </View>
+  )
+}

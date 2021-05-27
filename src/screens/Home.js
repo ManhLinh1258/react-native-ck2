@@ -1,20 +1,25 @@
 import React, {
   useEffect, useState
+
 } from 'react'
 import { View, Text, TouchableOpacity, FlatList, Image, StyleSheet } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { getProduct } from '../services/Api'
 import { getImage } from '../utils'
-const DATA = Array(10).fill('').map((e, i) => ({
-  id: i + 1,
-  photo: 'https://anhdepblog.com/wp-content/uploads/2020/09/anh-gai-xinh-facebook-21.jpg',
-  name: `ao 2 day ${i + 1}`,
-  price: '2000$',
-  heart: i % 2 === 0
+
+const productList = Array(10).fill(null).map((e, i) => ({
+  _id: i,
+  img: 'https://itcafe.vn/wp-content/uploads/2021/01/anh-gai-xinh-4.jpg',
+  name: 'T Shirt Women Funny Print',
+  heart: i % 2,
+  size: 'L',
+  price: 10 + i
 }))
-export default function App() {
+
+export default function App({ route, navigation }) {
   const [product, setProduct] = useState()
+
   useEffect(() => {
     // alert('hello')
     const getApiProduct = async () => {
@@ -22,20 +27,29 @@ export default function App() {
       console.log('result', result)
       setProduct(result.data.data)
     }
+
     getApiProduct()
+
   }, [])
+
+
+  const onMoveToDetail = (data) => () => {
+    navigation.navigate('Detail', { detail: data });
+  }
+
   const renderItem = ({ item }) => (
-    <View style={{ width: '45%', }}>
+    <TouchableOpacity style={{ width: '45%', }} onPress={onMoveToDetail(item)}>
       <Image
         style={styles.imgStyle}
-        source={{ uri: getIm  age(item.images?.[0]) }}
+        // source={{ uri: getImage(item.images?.[0]) }}
+        source={{ uri: item.img }}
       />
       <View style={styles.rowPrice}>
         <Text>{item.price}</Text>
         <Ionicons name="heart" size={30} color={item.heart ? 'red' : 'grey'} />
       </View>
       <Text>{item.name}</Text>
-    </View>
+    </TouchableOpacity>
   );
   return (
     <View>
@@ -50,7 +64,7 @@ export default function App() {
       </View>
       <Text style={{ textAlign: 'center', marginTop: 15, marginBottom: 20 }}>405 styles</Text>
       <FlatList
-        data={product}
+        data={productList}
         numColumns={2}
         renderItem={renderItem}
         keyExtractor={item => item._id?.toString()}
@@ -60,6 +74,7 @@ export default function App() {
     </View>
   )
 }
+
 const styles = StyleSheet.create({
   rowPrice: {
     flexDirection: 'row',
